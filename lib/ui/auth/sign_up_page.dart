@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../home_screen.dart';
+import 'package:telegram_clone/ui/auth/user_register_page.dart';
 
 
 class SignUpPage extends StatefulWidget {
@@ -56,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
     ).whenComplete(() {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) =>  UserRegisterPage(phoneNumber: countryDial + phoneController.text),
         ),
       );
     });
