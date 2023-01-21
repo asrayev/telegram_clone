@@ -47,29 +47,36 @@ class HomeScreen extends StatelessWidget {
   Widget UsersWidget(BuildContext context, List<UserModel> data, int index) {
     return InkWell(
       onTap: (() async {
-        // int uzun =  Provider.of<ChatViewModel>(context, listen: false).checkUser([currentUserUid, data[index].userUid]);
-        if (2 == 3) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    chatName: data[index].name,imageUrl: data[index].imageUrl,
-                        twoUsers: [currentUserUid, data[index].userUid],
-                      )));
-        } else {
-          await Provider.of<ChatViewModel>(context, listen: false).addChat(
-              ChatModel(
-                  docId: "",
-                  chat: [],
-                  twoUser: [currentUserUid, data[index].userUid]));
-          // ignore: use_build_context_synchronously
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatPage(chatName: data[index].name,imageUrl: data[index].imageUrl,
+          if (2==3) {
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ChatPage(
+                          chatName: data[index].name,
+                          imageUrl: data[index].imageUrl,
+                          twoUsers: [currentUserUid, data[index].userUid],
+                        )));
+          }
+          else {
+            Provider.of<ChatViewModel>(context, listen: false).addChats(
+                ChatModel(
+                    docId: "",
+                    chat: [],
+                    twoUser: [currentUserUid, data[index].userUid]));
+            // ignore: use_build_context_synchronously
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ChatPage(chatName: data[index].name,
+                            imageUrl: data[index].imageUrl,
 
-                      twoUsers: [currentUserUid, data[index].userUid])));
-        }
+                            twoUsers: [currentUserUid, data[index].userUid])));
+          }
+
+
       }),
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 7).r,

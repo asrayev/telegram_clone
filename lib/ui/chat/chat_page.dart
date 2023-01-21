@@ -26,14 +26,14 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Container(height: MediaQuery.of(context).size.height*0.8,
            child: StreamBuilder(
-                 stream: Provider.of<ChatViewModel>(context, listen: false).listenChat(widget.twoUsers),
+                 stream: Provider.of<ChatViewModel>(context, listen: false).listenAllChats1(widget.twoUsers),
                  builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var data = snapshot.data;
                         return ListView.builder(
-                            itemCount: data!.chat.length,
+                            itemCount: 1,
                             itemBuilder: (context, index){
-                          return Text(data.chat[index].text.toString());
+                          return Text(data!.length.toString());
                         });
                         }
 

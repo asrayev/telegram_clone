@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:telegram_clone/ui/auth/sign_up_page.dart';
-import 'package:telegram_clone/ui/auth/user_register_page.dart';
-import 'package:telegram_clone/ui/chat/chat_page.dart';
-import 'package:telegram_clone/ui/home/home_screen.dart';
 import 'package:telegram_clone/view_model/chat_view_model.dart';
 import 'package:telegram_clone/view_model/user_view_model.dart';
 import 'data/repositories/chat_repository.dart';
@@ -31,7 +28,7 @@ void main() async {
          ),
          ChangeNotifierProvider(
            create: (context) => ChatViewModel(
-             chatRepository: ChatRepository(
+             chatRepo: ChatRepo(
                firebaseFirestore: fireStore,
              ),
            ),
@@ -55,7 +52,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext contex, Widget? child) {
         return  const MaterialApp(
           debugShowCheckedModeBanner: false,
-           home:   SignUpPage()
+            home: SignUpPage()
         );
       },
     );
