@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:telegram_clone/data/models/user_model.dart';
 import 'package:telegram_clone/ui/auth/widget/my_textfield.dart';
 import 'package:telegram_clone/ui/auth/widget/next_button.dart';
-import 'package:telegram_clone/ui/home_screen.dart';
+import 'package:telegram_clone/ui/home/home_screen.dart';
 import '../../data/service/file_uploader.dart';
 import '../../view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
