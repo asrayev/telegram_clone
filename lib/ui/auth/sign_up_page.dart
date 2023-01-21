@@ -27,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> verifyPhone(String number) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: number,
-      timeout: const Duration(seconds: 20),
+      timeout: const Duration(seconds: 50),
       verificationCompleted: (PhoneAuthCredential credential) {
         showSnackBarText("Auth Completed!");
       },
@@ -35,14 +35,14 @@ class _SignUpPageState extends State<SignUpPage> {
         showSnackBarText("Auth Failed!");
       },
       codeSent: (String verificationId, int? resendToken) {
-        showSnackBarText("OTP Sent!");
+        showSnackBarText("SMS sent !");
         verID = verificationId;
         setState(() {
           screenState = 1;
         });
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        showSnackBarText("Timeout!");
+        showSnackBarText("Timeout bro!");
       },
     );
   }
@@ -123,9 +123,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             if(screenState == 0) {
 
                               if(phoneController.text.isEmpty) {
-                                showSnackBarText("Phone number is still empty!");
+                                showSnackBarText("Phone number is empty bro!");
                               } else {
-                                verifyPhone(countryDial + phoneController.text);
+                                verifyPhone("+998${phoneController.text}");
                               }
                             } else {
                               if(otpPin.length >= 6) {
@@ -187,7 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         IntlPhoneField(
           controller: phoneController,
           showCountryFlag: false,

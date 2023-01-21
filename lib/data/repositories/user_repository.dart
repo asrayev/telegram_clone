@@ -43,8 +43,8 @@ class UserRepository {
     }
   }
 
-  Stream<List<UserModel>> getAllUsers() =>
-      _firestore.collection("users").snapshots().map(
+  Stream<List<UserModel>> getAllUsers(String currentUser) =>
+      _firestore.collection("users").where("user_uid", isNotEqualTo: currentUser).snapshots().map(
             (querySnapshot) => querySnapshot.docs
             .map((doc) => UserModel.fromJson(doc.data()))
             .toList(),
@@ -61,7 +61,7 @@ class UserRepository {
     } else {
       yield* _firestore
           .collection("users")
-          .where("categoryId", isEqualTo: userId)
+          .where("user_id", isEqualTo: userId)
           .snapshots()
           .map(
             (querySnapshot) => querySnapshot.docs

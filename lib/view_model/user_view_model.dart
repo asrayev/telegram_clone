@@ -12,17 +12,11 @@ class UserViewModel extends ChangeNotifier {
   List<UserModel> userAdmin = [];
   late StreamSubscription subscription;
 
-  List<UserModel> products = [];
+  List<UserModel> users = [];
 
-  // listenProducts() async {
-  //   subscription = userRepository.getProducts().listen((allProducts) {
-  //     products = allProducts;
-  //     notifyListeners();
-  //   })
-  //     ..onError((er) {});
-  // }
-  Stream<List<UserModel>> listenUsers1() =>
-      userRepository.getAllUsers();
+
+  Stream<List<UserModel>> listenUsers1(String currentUser) =>
+      userRepository.getAllUsers(currentUser);
 
   addUser(UserModel userModel) =>
       userRepository.addUser(userModel: userModel);
@@ -32,22 +26,13 @@ class UserViewModel extends ChangeNotifier {
 
   deleteUser(String docId) => userRepository.deleteUser(docId: docId);
 
-  // listenProductsID(String categoryId) async {
-  //   subscription = userRepository
-  //       .getProductsById(categoryId: categoryId)
-  //       .listen((allProducts) {
-  //     print("ALL PRODUCTS LENGTH:${allProducts.length}");
-  //     products = allProducts;
-  //     notifyListeners();
-  //   });
-  // }
   listenUser(String userId) async {
     subscription = userRepository
         .getUser(userId: userId)
         .listen((allUsers) {
       if(userId.isEmpty) userAdmin = allUsers;
-      print("ALL PRODUCTS LENGTH:${allUsers.length}");
-      products = allUsers;
+
+      users = allUsers;
       notifyListeners();
     });
   }

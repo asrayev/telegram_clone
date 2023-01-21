@@ -63,7 +63,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                       userUid: FirebaseAuth.instance.currentUser!.uid,
                       some: ""
                   ));
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));}
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(currentUserUid: FirebaseAuth.instance.currentUser!.uid,)));}
                   },)
               ],
             ),
