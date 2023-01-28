@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,34 +48,36 @@ class HomeScreen extends StatelessWidget {
   Widget UsersWidget(BuildContext context, List<UserModel> data, int index) {
     return InkWell(
       onTap: (() async {
-          if (2==3) {
-            // ignore: use_build_context_synchronously
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ChatPage(
-                          chatName: data[index].name,
-                          imageUrl: data[index].imageUrl,
-                          twoUsers: [currentUserUid, data[index].userUid],
-                        )));
-          }
-          else {
+
             Provider.of<ChatViewModel>(context, listen: false).addChats(
                 ChatModel(
-                    docId: "",
+                    docId: getChatRoomId(currentUserUid.toString(),data[index].userUid),
                     chat: [],
-                    twoUser: [currentUserUid, data[index].userUid]));
+                    twoUser: [currentUserUid, data[index].userUid]),
+                getChatRoomId(currentUserUid.toString(),data[index].userUid));
+            // ignore: use_build_context_synchronously
+            var userDocRef = FirebaseFirestore.instance.collection('chats').doc(getChatRoomId(currentUserUid.toString(),data[index].userUid));
+            var doc = await userDocRef.get();
+            String docId;
+            if (!doc.exists) {
+              print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa$userDocRef");
+              docId = getChatRoomId(currentUserUid.toString(),data[index].userUid);
+            } else {
+              print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB$userDocRef");
+              docId = getChatRoomId(data[index].userUid,currentUserUid.toString());
+            }
             // ignore: use_build_context_synchronously
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
                         ChatPage(chatName: data[index].name,
+                             chatsDocId: docId,
                             imageUrl: data[index].imageUrl,
+                            twoUsers: [currentUserUid, data[index].userUid],
+                          currentUser: currentUserUid,
+                        )));
 
-                            twoUsers: [currentUserUid, data[index].userUid])));
-          }
 
 
       }),
@@ -111,5 +114,12 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
 }

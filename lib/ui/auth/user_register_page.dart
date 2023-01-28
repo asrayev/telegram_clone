@@ -6,6 +6,7 @@ import 'package:telegram_clone/data/models/user_model.dart';
 import 'package:telegram_clone/ui/auth/widget/my_textfield.dart';
 import 'package:telegram_clone/ui/auth/widget/next_button.dart';
 import 'package:telegram_clone/ui/home/home_screen.dart';
+import '../../data/repositories/shared_repository.dart';
 import '../../data/service/file_uploader.dart';
 import '../../view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,10 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                 SizedBox(height: 20.h,),
                 MyTextField(controller: _controllerName, text: "Enter your name"),
                 SizedBox(height: 380.h,),
-                NextButton(isActive: checkActive(),onTap: (){
+                NextButton(isActive: checkActive(),onTap: ()  async {
+                  var userId =  FirebaseAuth.instance.currentUser!.uid;
+                  await  StorageRepository.saveUserId(userId);
+                  // ignore: use_build_context_synchronously
                   if (checkActive()) {context.read<UserViewModel>().addUser(UserModel(
                       userId: "",
                       name: _controllerName.text,
@@ -63,6 +67,7 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
                       userUid: FirebaseAuth.instance.currentUser!.uid,
                       some: ""
                   ));
+
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen(currentUserUid: FirebaseAuth.instance.currentUser!.uid,)));}
                   },)
               ],

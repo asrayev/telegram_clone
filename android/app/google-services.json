@@ -1,10 +1,40 @@
 {
   "project_info": {
     "project_number": "538015195373",
+    "firebase_url": "https://telegram-clone-944bc-default-rtdb.firebaseio.com",
     "project_id": "telegram-clone-944bc",
     "storage_bucket": "telegram-clone-944bc.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538015195373:android:cbf56f32c3fad6c4902ce4",
+        "android_client_info": {
+          "package_name": "com.example.telechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538015195373-0blrmcngucqtvprcrtdaclb9kc2c9sdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5quZcdlSve0uVVDgaiuMXzgPvDFoRlHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538015195373-0blrmcngucqtvprcrtdaclb9kc2c9sdc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:538015195373:android:cdaf56a3c2922c79902ce4",
@@ -13,6 +43,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "538015195373-pijmvqsj15p8281g48oti5v1b6fl11j2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telegram_clone",
+            "certificate_hash": "7d57b52a6832029c4bd208292892e0db574e2a8b"
+          }
+        },
         {
           "client_id": "538015195373-0blrmcngucqtvprcrtdaclb9kc2c9sdc.apps.googleusercontent.com",
           "client_type": 3

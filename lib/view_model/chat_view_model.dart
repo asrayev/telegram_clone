@@ -3,40 +3,54 @@ import 'package:flutter/material.dart';
 import 'package:telegram_clone/data/models/chat_model.dart';
 import 'package:telegram_clone/data/repositories/chat_repository.dart';
 
+import '../data/models/chat_room_model.dart';
+
 
 class ChatViewModel extends ChangeNotifier {
-  final ChatRepo chatRepo;
 
   ChatViewModel({required this.chatRepo}){
-    listenChats("");
+    listenChats("AqxabSDybRZbBPyjx50uvo92YwP2_gqjdzKBEh7UauKx19KDgUrS1ct22");
+    //listenAllChats1("AqxabSDybRZbBPyjx50uvo92YwP2_gqjdzKBEh7UauKx19KDgUrS1ct22");
   }
-  List<ChatModel> chatAdmin = [];
+  List<ChatRoomModel> chatAdmin = [];
   late StreamSubscription subscription;
 
-  List<ChatModel> chats = [];
+  final ChatRepo chatRepo;
 
-  Stream<List<ChatModel>> listenAllChats1(List users) =>
-      chatRepo.getChats(users: users);
+  List<ChatRoomModel> chats = [];
 
-  addChats(ChatModel chatModel) =>
-      chatRepo.addChat(chatModel: chatModel);
+  Stream<List<ChatRoomModel>>? listenAllChats1(String users) =>
+      chatRepo.listenChat (docId: users);
 
-  updateChats(ChatModel chatModel) =>
-      chatRepo.updateChat(chatModel: chatModel);
+  addChats(ChatModel chatModel, String newDoc) =>
+      chatRepo.addChat(chatModel: chatModel, newDoc: newDoc);
+
+  addMessage(ChatRoomModel chatRoomModel, String newDoc) =>
+      chatRepo.addMessage(chatsId: newDoc, chatRoomModel: chatRoomModel);
 
   deleteChats(String docId) => chatRepo.deleteChat(docId: docId);
 
-
-  listenChats(String docId) async {
-    subscription = chatRepo
-        .getChat(docId: docId)
-        .listen((allProducts) {
-      if(docId.isEmpty) chatAdmin = allProducts;
-      print("ALL PRODUCTS LENGTH:${allProducts.length}");
-      chats = allProducts;
+  listenChats(String docId){
+    chatRepo.listenChat(docId: docId).listen((chatsList) {
+      chats = chatsList;
       notifyListeners();
     });
   }
+
+  // getChatDoc(String doc){
+  //   return chatRepo.
+  // }
+
+  // listenChats(String docId) async {
+  //   subscription = chatRepo
+  //       .listenChat(docId: docId)
+  //       .listen((allProducts) {
+  //     if(docId.isEmpty) chatAdmin = allProducts;
+  //     print("ALL PRODUCTS LENGTH:${allProducts.length}");
+  //     chats = allProducts;
+  //     notifyListeners();
+  //   });
+  // }
 
   @override
   void dispose() {
