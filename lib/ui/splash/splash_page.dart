@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:telegram_clone/ui/auth/sign_up_page.dart';
 import 'package:telegram_clone/ui/home/home_screen.dart';
+import 'package:telegram_clone/utils/my_lotties.dart';
 import '../../data/repositories/shared_repository.dart';
 import '../../utils/my_colors.dart';
 
@@ -20,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
 
   onNextPage() {
     // print(StorageRepository.getUserId());
-    Future.delayed(const Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 3), () async {
       dynamic response = await StorageRepository.getUserId();
       response==""?
       // ignore: use_build_context_synchronously
@@ -37,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
     return  Scaffold(
         backgroundColor: MyColors.C_1B202D,
       body: Center(
-        child: Text("Splash page bruh"),
+        child: Lottie.asset(MyLottie.splash),
       )
     );
   }

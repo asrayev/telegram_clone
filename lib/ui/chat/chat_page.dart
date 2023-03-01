@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:location/location.dart';
 import 'package:lottie/lottie.dart';
 import 'package:telegram_clone/data/models/chat_room_model.dart';
 import 'package:telegram_clone/ui/chat/widget/chat_get_widget.dart';
 import 'package:telegram_clone/ui/chat/widget/chat_send_widget.dart';
+import 'package:telegram_clone/utils/my_icons.dart';
 import 'package:telegram_clone/utils/my_lotties.dart';
 import 'package:telegram_clone/view_model/chat_view_model.dart';
 import 'package:provider/provider.dart';
+import '../../data/models/location.dart';
 import '../../utils/my_colors.dart';
+import '../map/map_page.dart';
 
 class ChatPage extends StatefulWidget {
   final List twoUsers;
@@ -30,7 +35,43 @@ class ChatPage extends StatefulWidget {
 }
 
 final _textController = TextEditingController();
+@override
+Future<void> locationService() async {
+  Location location = new Location();
 
+  bool _serviceEnabled;
+  PermissionStatus _permissionLocation;
+  LocationData _locData;
+
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+    if (!_serviceEnabled) {
+      return;
+    }
+  }
+
+  _permissionLocation = await location.hasPermission();
+  if (_permissionLocation == PermissionStatus.denied) {
+    _permissionLocation = await location.requestPermission();
+    if (_permissionLocation != PermissionStatus.granted) {
+      return;
+    }
+  }
+
+  _locData = await location.getLocation();
+
+  // setState(() {
+  //   UserLocation.lat = _locData.latitude!;
+  //   UserLocation.long = _locData.longitude!;
+  //   print("bbbbbbbbbbbbbbb${UserLocation.lat}");
+  //   print("aaaaaaaaaaaaaaaaa${UserLocation.long}");
+  // });
+}
+initState(){
+  // locationService();
+  // super.initState;
+}
 class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
@@ -48,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
+          child: Stack(
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -87,38 +128,50 @@ class _ChatPageState extends State<ChatPage> {
                       }
                     }),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                width: MediaQuery.of(context).size.width * 0.95,
-                decoration: BoxDecoration(
-                    color: MyColors.C_7A8194,
-                    borderRadius: BorderRadius.circular(25).w),
-                child: Padding(
-                  padding: EdgeInsets.only(right: 15.r, left: 15.r),
-                  child: Row(
-                    children: [
-                      MyInput(),
-                      InkWell(
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          onTap: (() {
-                            if (_textController.text.trim() != "") {
-                              Provider.of<ChatViewModel>(context, listen: false)
-                                  .addMessage(
-                                      ChatRoomModel(
-                                          chatroomId: "",
-                                          text: _textController.text,
-                                          datatime: DateTime.now().toString(),
-                                          userUid: widget.currentUser),
-                                      getChatRoomId(widget.twoUsers[0],
-                                          widget.twoUsers[1]));
-                              _textController.clear();
-                            }
-                          }),
-                          child: const Icon(Icons.send))
-                    ],
+              Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height*0.8,),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    decoration: BoxDecoration(
+                        color: MyColors.C_7A8194,
+                        borderRadius: BorderRadius.circular(25).w),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 15.r, left: 15.r),
+                      child: Row(
+                        children: [
+                          MyInput(),
+                          InkWell(
+                              onTap: (() {
+
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>const MapPage()));
+                              }),
+                              child: SvgPicture.asset(MyIcon.location)),
+                          SizedBox(width: 10.w,),
+                          InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: (() {
+                                if (_textController.text.trim() != "") {
+                                  Provider.of<ChatViewModel>(context, listen: false)
+                                      .addMessage(
+                                          ChatRoomModel(
+                                              chatroomId: "",
+                                              text: _textController.text,
+                                              datatime: DateTime.now().toString(),
+                                              userUid: widget.currentUser),
+                                          getChatRoomId(widget.twoUsers[0],
+                                              widget.twoUsers[1]));
+                                  _textController.clear();
+                                }
+                              }),
+                              child: const Icon(Icons.send))
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               )
             ],
           ),
@@ -155,4 +208,5 @@ class _ChatPageState extends State<ChatPage> {
       return "$a\_$b";
     }
   }
+
 }
